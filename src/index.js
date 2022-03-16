@@ -105,10 +105,9 @@ app.get('/update', (req, res) => {
   res.send('ok')
 })
 
-app.get('*', function(req, res){
-  console.log(req.originalUrl)
-  res.send('Not found', 404);
-});
+app.get('*', function (req, res) {
+  res.status(404).send('Not found')
+})
 
 const host = process.env.APP_HOST || 'localhost'
 const port = process.env.APP_PORT || 3001
