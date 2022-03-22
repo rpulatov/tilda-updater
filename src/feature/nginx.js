@@ -1,16 +1,12 @@
-const shell = require('shelljs')
-function nginxReload() {
-  return new Promise((resolve, reject) => {
-    shell.exec('sudo /usr/sbin/service nginx reload', (error, stdout, stderr) => {
-      if (error) {
-        return reject(error)
-      }
-      if (stderr) {
-        return reject(new Error(`stderr: ${stderr}`))
-      }
-      resolve(stdout)
-    })
-  })
+const path = require('path')
+const { createFile } = require('./fileutils')
+
+async function nginxReload(projectsPath) {
+  const res = await createFile(path.join(projectsPath, 'nginx.reload'), 'Config updated')
+
+  console.info('Task to restart nginx successfully created')
+
+  return res
 }
 
 module.exports = {

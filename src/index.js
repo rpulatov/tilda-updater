@@ -7,6 +7,7 @@ const path = require('path')
 const { updateSite } = require('./feature/tilda')
 const { nginxReload } = require('./feature/nginx')
 
+const rootPath = path.join(__dirname, '../')
 const projectsPath = path.join(__dirname, '../projects')
 const dev = process.env.NODE_ENV !== 'production'
 const app = express({ dev })
@@ -18,8 +19,7 @@ app.get('/update', (req, res) => {
 
   updateSite(projectsPath, req.query)
     .then(() => console.info('Update successfully'))
-    .then(() => nginxReload())
-    .then(stdout => console.info('Nginx reloaded -> ', stdout))
+    .then(() => nginxReload(rootPath))
     .catch(error => console.info('Error', error.message))
 
   res.send('ok')
@@ -27,9 +27,7 @@ app.get('/update', (req, res) => {
 
 app.get('/reload', (req, res) => {
   console.info('incoming /reload', req.query)
-  nginxReload()
-    .then(stdout => console.info('Nginx reloaded -> ', stdout))
-    .catch(error => console.info('Error', error.message))
+  nginxReload(rootPath).catch(error => console.info('Error', error.message))
   res.send('ok')
 })
 
