@@ -2,7 +2,7 @@ const { exec } = require('child_process')
 
 function nginxReload() {
   return new Promise((resolve, reject) => {
-    exec('sudo nginx -s reload', (error, stdout, stderr) => {
+    exec('sudo systemctl reload nginx', (error, stdout, stderr) => {
       if (error) {
         return reject(error)
       }
