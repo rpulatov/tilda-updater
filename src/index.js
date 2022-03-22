@@ -25,7 +25,8 @@ app.get('/update', (req, res) => {
   res.send('ok')
 })
 
-app.get('/reload', () => {
+app.get('/reload', (req, res) => {
+  console.info('incoming /reload', req.query)
   nginxReload()
     .then(stdout => console.info('Nginx reloaded -> ', stdout))
     .catch(error => console.info('Error', error.message))
