@@ -6,6 +6,7 @@ const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
 const { TildaClient } = require('tilda-client')
+const { htconvert } = require('./feature/htconvert')
 
 const PROJECTS_PATH = path.join(__dirname, '../projects')
 
@@ -74,6 +75,8 @@ app.get('/update', (req, res) => {
     }
 
     await createFile(path.join(PROJECT_PATH, '.htaccess'), project.htaccess)
+
+    await createFile(path.join(PROJECT_PATH, 'nginx-tilda.conf'), htconvert(project.htaccess))
 
     // await createFileFromUrl(path.join(PROJECT_PATH, 'favicon.ico'), project.favicon)
 
