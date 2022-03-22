@@ -4,9 +4,7 @@ const { TildaClient } = require('tilda-client')
 const { createIfNotExist, createFile, createFileFromUrl } = require('./fileutils')
 const { htconvert } = require('./htconvert')
 
-const PROJECTS_PATH = path.join(__dirname, '../projects')
-
-async function updateSite({ pageid, projectid, publickey }) {
+async function updateSite(projectsPath, { pageid, projectid, publickey }) {
   const tilda = new TildaClient(publickey, process.env.TILDA_SECRET_KEY)
 
   const project = await tilda.getProjectExport(projectid)
@@ -14,7 +12,7 @@ async function updateSite({ pageid, projectid, publickey }) {
   const CSS_PATH = project.export_csspath ? project.export_csspath : 'css'
   const JS_PATH = project.export_jspath ? project.export_jspath : 'js'
   const IMG_PATH = project.export_imgpath ? project.export_imgpath : 'images'
-  const PROJECT_PATH = path.join(PROJECTS_PATH, project.customdomain)
+  const PROJECT_PATH = path.join(projectsPath, project.customdomain)
 
   await createIfNotExist(path.join(PROJECT_PATH, CSS_PATH))
   await createIfNotExist(path.join(PROJECT_PATH, JS_PATH))

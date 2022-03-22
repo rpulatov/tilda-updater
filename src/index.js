@@ -6,6 +6,7 @@ const cors = require('cors')
 const { updateSite } = require('./feature/tilda')
 const { nginxReload } = require('./feature/nginx')
 
+const projectsPath = path.join(__dirname, '../projects')
 const dev = process.env.NODE_ENV !== 'production'
 const app = express({ dev })
 
@@ -14,7 +15,7 @@ app.use(cors({ origin: '*', methods: ['GET'], allowedHeaders: '*' }))
 app.get('/update', (req, res) => {
   console.info('incoming', req.query)
 
-  updateSite(req.query)
+  updateSite(projectsPath, req.query)
     .then(() => console.info('Update successfully'))
     .then(() => nginxReload())
     .then(stdout => console.info('Nginx reloaded -> ', stdout))
