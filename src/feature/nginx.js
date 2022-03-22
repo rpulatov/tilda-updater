@@ -1,12 +1,17 @@
-const path = require('path')
-const { createFile } = require('./fileutils')
+const { exec } = require('child_process')
 
-async function nginxReload(projectsPath) {
-  const res = await createFile(path.join(projectsPath, 'nginx.reload'), 'Config updated')
-
-  console.info('Task to restart nginx successfully created')
-
-  return res
+function nginxReload() {
+  return new Promise((resolve, reject) => {
+    exec('sudo systemctl reload nginx', (error, stdout, stderr) => {
+      if (error) {
+        return reject(error)
+      }
+      if (stderr) {
+        return reject(new Error(`stderr: ${stderr}`))
+      }
+      resolve(stdout)
+    })
+  })
 }
 
 module.exports = {

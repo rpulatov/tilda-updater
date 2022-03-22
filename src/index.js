@@ -20,6 +20,7 @@ app.get('/update', (req, res) => {
   updateSite(projectsPath, req.query)
     .then(() => console.info('Update successfully'))
     .then(() => nginxReload(rootPath))
+    .then(stdout => console.info('Nginx reloaded -> ', stdout))
     .catch(error => console.info('Error', error.message))
 
   res.send('ok')
@@ -27,7 +28,9 @@ app.get('/update', (req, res) => {
 
 app.get('/reload', (req, res) => {
   console.info('incoming /reload', req.query)
-  nginxReload(rootPath).catch(error => console.info('Error', error.message))
+  nginxReload(rootPath)
+    .then(stdout => console.info('Nginx reloaded -> ', stdout))
+    .catch(error => console.info('Error', error.message))
   res.send('ok')
 })
 
