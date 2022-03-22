@@ -25,6 +25,13 @@ app.get('/update', (req, res) => {
   res.send('ok')
 })
 
+app.get('/reload', () => {
+  nginxReload()
+    .then(stdout => console.info('Nginx reloaded -> ', stdout))
+    .catch(error => console.info('Error', error.message))
+  res.send('ok')
+})
+
 app.get('*', function (req, res) {
   res.status(404).send('Not found')
 })
